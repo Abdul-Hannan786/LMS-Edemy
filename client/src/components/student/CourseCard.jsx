@@ -6,17 +6,21 @@ import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { assets } from "@/assets/assets";
 import { Star, StarHalf, Star as StarOutline } from "lucide-react";
+import { useAppContext } from "@/context/AppContext";
 
 const CourseCard = ({ course }) => {
+  const { calculateRating } = useAppContext();
+
   return (
     <Link to={`/course/${course._id}`}>
-      <Card className="overflow-hidden rounded-md py-0 gap-0 border-none hover:scale-105 transition-all duration-500">
+      <Card className="overflow-hidden shadow-xl rounded-md py-0 gap-0 border-none hover:scale-105 transition-all duration-500">
         <CardHeader className="p-0 m-0">
           <div className="aspect-video bg-muted w-full border-b">
             <img
               src={course.courseThumbnail}
               alt="course thumbnail"
               className="object-cover w-full h-full"
+              loading="lazy"
             />
           </div>
         </CardHeader>
@@ -40,21 +44,23 @@ const CourseCard = ({ course }) => {
           <div className="mt-4 flex items-center justify-between">
             {/* Rating */}
             <div className="flex items-center gap-1 text-sm text-gray-700">
-              <p className="font-medium">{course.rating || "4.5"}</p>
+              <p className="font-medium">{calculateRating(course)}</p>
               <div className="flex gap-[2px] text-yellow-500">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     size={16}
                     className={`${
-                      i < Math.floor(course.rating || 4.5)
+                      i < Math.floor(calculateRating(course))
                         ? "fill-yellow-400 stroke-yellow-400"
                         : "stroke-gray-400"
                     }`}
                   />
                 ))}
               </div>
-              <p className="text-muted-foreground text-xs ml-1">22</p>
+              <p className="text-muted-foreground text-xs ml-1">
+                ({course.courseRatings.length})
+              </p>
             </div>
 
             {/* Price */}

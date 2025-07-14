@@ -8,20 +8,20 @@ const Companies = () => {
         <img
           src={assets.microsoft_logo}
           alt="Microsoft"
-          className="md:w-28 w-20"
+          className="md:w-28 w-20" loading="lazy"
         />
-        <img src={assets.walmart_logo} alt="Walmart" className="md:w-28 w-20" />
+        <img src={assets.walmart_logo} alt="Walmart" className="md:w-28 w-20" loading="lazy" />
         <img
           src={assets.accenture_logo}
           alt="Accenture"
-          className="md:w-28 w-20"
+          className="md:w-28 w-20" loading="lazy"
         />
         <img
           src={assets.adobe_logo}
           alt="Adobe_logo"
-          className="md:w-28 w-20"
+          className="md:w-28 w-20" loading="lazy"
         />
-        <img src={assets.paypal_logo} alt="Paypal" className="md:w-28 w-20" />
+        <img src={assets.paypal_logo} alt="Paypal" className="md:w-28 w-20"  loading="lazy"/>
       </div>
     </div>
   );
