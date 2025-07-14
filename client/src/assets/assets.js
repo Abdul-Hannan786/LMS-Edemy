@@ -105,10 +105,10 @@ export const testimonials = [
   {
     id: 1,
     name: "John Doe",
-    designation: "Software Engineer",
+    designation: "Frontend Developer",
     company: "TechCorp",
     testimonial:
-      "This product has completely transformed the way we work. The efficiency and ease of use are unmatched!",
+      "This platform has helped me upskill rapidly. The quality of the courses and the structured content made learning enjoyable and effective.",
     avatar: "https://randomuser.me/api/portraits/men/1.jpg",
   },
   {
@@ -117,7 +117,7 @@ export const testimonials = [
     designation: "Data Analyst",
     company: "InsightTech",
     testimonial:
-      "This tool has saved me hours of work! The analytics and reporting features are incredibly powerful.",
+      "I love how easy it is to access high-quality courses anytime. The hands-on projects and quizzes really helped reinforce what I learned.",
     avatar: "https://randomuser.me/api/portraits/women/6.jpg",
   },
   {
@@ -126,8 +126,7 @@ export const testimonials = [
     designation: "UX Designer",
     company: "DesignPro",
     testimonial:
-      "An amazing tool that simplifies complex tasks. Highly recommended for professionals in the industry. " +
-      "The intuitive interface makes it easy to onboard new team members, and the automation features save us countless hours every week. ",
+      "The platform is super intuitive. As an educator, uploading and managing my courses is effortless, and the student feedback system is fantastic!",
     avatar: "https://randomuser.me/api/portraits/men/3.jpg",
   },
   {
@@ -136,7 +135,7 @@ export const testimonials = [
     designation: "Marketing Specialist",
     company: "BrandBoost",
     testimonial:
-      "I've seen a significant improvement in our team's productivity since we started using this service.",
+      "I’ve completed several marketing courses here and every one of them exceeded my expectations. The community and support team are also amazing.",
     avatar: "https://randomuser.me/api/portraits/women/4.jpg",
   },
   {
@@ -145,7 +144,7 @@ export const testimonials = [
     designation: "Full-Stack Developer",
     company: "CodeCrafters",
     testimonial:
-      "The best investment we've made! The support team is also super responsive and helpful.",
+      "Being able to teach on this platform has expanded my reach as an educator. It's rewarding to see students engage with my content globally.",
     avatar: "https://randomuser.me/api/portraits/men/5.jpg",
   },
   {
@@ -154,10 +153,11 @@ export const testimonials = [
     designation: "Product Manager",
     company: "InnovateX",
     testimonial:
-      "The user experience is top-notch! The interface is clean, intuitive, and easy to navigate.",
+      "A fantastic learning environment! The course variety and instructor expertise have helped me stay ahead in my career.",
     avatar: "https://randomuser.me/api/portraits/women/2.jpg",
   },
 ];
+
 
 export const dummyDashboardData = {
   totalEarnings: 707.38,
