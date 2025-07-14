@@ -1,10 +1,10 @@
 import React from "react";
 
-const CourseCard = () => {
+const CourseCard = ({ course }) => {
   return (
-    <div>
-      <h1>Course Card</h1>
-    </div>
+   <>
+   
+   </>
   );
 };
 
