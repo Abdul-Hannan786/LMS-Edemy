@@ -3,8 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const TestimonialsSection = () => {
   return (
-    <div className="pb-14 px-8 md:px-0">
-      <h2 className="text-3xl font-medium text-gray-800">Testimonials</h2>
+    <div className="px-8 md:px-0">
+      <h2 className="md:text-4xl text-xl font-medium text-gray-800">Testimonials</h2>
       <p className="md:text-base text-gray-500 mt-3">
         Hear from our learners as they share their journeys of transformation,
         success, and how our <br /> platform has made a difference in their
@@ -17,11 +17,11 @@ const TestimonialsSection = () => {
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="relative mb-8 bg-accent rounded-xl p-6 break-inside-avoid"
+                className="relative mb-8 bg-accent rounded-xl p-6 break-inside-avoid shadow-xl"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <Avatar>
+                    <Avatar className="w-12 h-auto">
                       <AvatarFallback className="text-xl font-medium bg-primary text-primary-foreground">
                         {testimonial.name.charAt(0)}
                       </AvatarFallback>
