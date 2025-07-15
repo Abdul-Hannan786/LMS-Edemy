@@ -17,7 +17,7 @@ const TestimonialsSection = () => {
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.id}
-                className="relative mb-8 bg-accent rounded-xl p-6 break-inside-avoid shadow-xl"
+                className="relative hover:scale-105 transition-all duration-500 mb-8 bg-accent rounded-xl p-6 break-inside-avoid shadow-xl"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
