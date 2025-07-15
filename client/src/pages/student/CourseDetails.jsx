@@ -3,12 +3,27 @@ import { useAppContext } from "@/context/AppContext";
 import { Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Card } from "@/components/ui/card";
+import { assets } from "@/assets/assets";
+import humanizeDuration from "humanize-duration";
 
 const CourseDetails = () => {
   const { id } = useParams();
   const [courseData, setCourseData] = useState(null);
 
-  const { allCourses, calculateRating } = useAppContext();
+  const {
+    allCourses,
+    calculateRating,
+    calculateNoOfLectures,
+    calculateCourseDuration,
+    calculateChapterTime,
+  } = useAppContext();
   const fetchCourseData = async () => {
     const course = allCourses.find((course) => course._id === id);
     setCourseData(course);
@@ -31,7 +46,7 @@ const CourseDetails = () => {
         <p
           className="pt-4 md:text-base text-sm"
           dangerouslySetInnerHTML={{
-            __html: courseData.courseDescription.slice(0, 250),
+            __html: courseData.courseDescription.slice(0, 200),
           }}
         ></p>
 
@@ -65,10 +80,127 @@ const CourseDetails = () => {
           Course by{" "}
           <span className="text-blue-600 underline">Abdul Hannan</span>
         </p>
+
+        <div className="pt-8 text-gray-800">
+          <h2 className="text-xl font-semibold">Course Structure</h2>
+          <div className="pt-5">
+            <div className="max-w-4xl mx-auto space-y-4">
+              <Accordion
+                type="single"
+                collapsible
+                className="w-full shadow-xl md:shadow-2xl p-5 rounded-xl"
+              >
+                {courseData.courseContent.map((chapter, index) => (
+                  <AccordionItem key={index} value={chapter.chapterTitle}>
+                    <AccordionTrigger className="text-base font-semibold">
+                      {chapter.chapterTitle}
+                      <span className="text-sm font-normal ml-auto">
+                        {chapter.chapterContent.length} lectures -{" "}
+                        {calculateChapterTime(chapter)}
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <Card className="p-4 gap-3">
+                        {chapter.chapterContent.map((lecture, index) => (
+                          <div
+                            key={index}
+                            className="flex justify-between items-center"
+                          >
+                            <span className="flex items-center gap-2">
+                              <img
+                                src={assets.play_icon}
+                                alt="play icon"
+                                className="w-4 h-4 mt-1"
+                              />{" "}
+                              {lecture.lectureTitle}
+                            </span>
+                            <span className="text-sm flex gap-2">
+                              {/* Preview 12 hours */}
+                              {lecture.isPreviewFree && (
+                                <span className="text-sm text-blue-600 cursor-pointer">
+                                  Preview
+                                </span>
+                              )}
+                              {humanizeDuration(
+                                lecture.lectureDuration * 60 * 1000,
+                                { units: ["h", "m"] }
+                              )}
+                            </span>
+                          </div>
+                        ))}
+                      </Card>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </div>
+
+        <div className="py-14 text-sm md:text-default">
+          <h3 className="text-2xl md:text-3xl font-semibold text-gray-800">
+            Course Description
+          </h3>
+          <p
+            className="pt-3 rich-text"
+            dangerouslySetInnerHTML={{
+              __html: courseData.courseDescription,
+            }}
+          ></p>
+        </div>
       </div>
 
       {/* Right Column */}
-      <div></div>
+      <div className="max-w-[424px] z-10 shadow-xl rounded-t-lg overflow-hidden bg-white min-w-[300px] sm:min-w-[420px]">
+        <img src={courseData.courseThumbnail} alt="course thumbnail" />
+        <div className="p-5">
+          <div className="flex items-center gap-2">
+            <img
+              src={assets.time_left_clock_icon}
+              alt="time left clock icon"
+              className="w-3.5"
+            />
+            <p className="text-red-500">
+              <span className="font-medium">5 days</span> left at this price!
+            </p>
+          </div>
+          <div className="flex gap-3 items-center pt-2">
+            <p className="text-gray-800 md:text-4xl text-2xl font-semibold">
+              $
+              {(
+                courseData.coursePrice -
+                (courseData.discount * courseData.coursePrice) / 100
+              ).toFixed(2)}
+            </p>
+            <p className="md:text-lg text-gray-500 line-through">
+              ${courseData.coursePrice}
+            </p>
+            <p className="md:text-lg text-gray-500">
+              {courseData.discount}% off
+            </p>
+          </div>
+          <div className="flex items-center text-sm md:text-default gap-4 pt-2 md:pt-4 text-gray-500">
+            <div className="flex items-center gap-1">
+              <Star size={16} className="fill-yellow-400 stroke-yellow-400" />
+              <p>{calculateRating(courseData)}</p>
+            </div>
+
+            <div className="h-4 w-px bg-gray-500/40"></div>
+
+            <div className="flex items-center gap-2">
+              <img src={assets.time_clock_icon} alt="clock icon" />
+              <p>{calculateCourseDuration(courseData)}</p>
+            </div>
+
+            <div className="h-4 w-px bg-gray-500/40"></div>
+
+            <div className="flex items-center gap-2">
+              <img src={assets.lesson_icon} alt="lesson icon" />
+              <p>{calculateNoOfLectures(courseData)} lessons</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   ) : (
     <Loading />

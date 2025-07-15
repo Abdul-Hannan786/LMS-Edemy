@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-import { Star, StarHalf, Star as StarOutline } from "lucide-react";
+import { Star } from "lucide-react";
 import { useAppContext } from "@/context/AppContext";
 
 const CourseCard = ({ course }) => {
