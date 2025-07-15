@@ -10,6 +10,10 @@
   font-family: Outfit;
 }
 
+.section-height {
+  height: 500px;
+}
+
 @theme {
   --text-course-details-heading-small: 26px;
   --text-course-details-heading-large: 36px;

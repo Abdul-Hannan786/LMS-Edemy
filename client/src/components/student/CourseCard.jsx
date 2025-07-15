@@ -1,10 +1,8 @@
-import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-import { assets } from "@/assets/assets";
 import { Star, StarHalf, Star as StarOutline } from "lucide-react";
 import { useAppContext } from "@/context/AppContext";
 
@@ -41,7 +39,7 @@ const CourseCard = ({ course }) => {
           </p>
 
           {/* Rating + Price Section */}
-          <div className="mt-4 flex items-center justify-between">
+          <div className="mt-1 flex items-center justify-between">
             {/* Rating */}
             <div className="flex items-center gap-1 text-sm text-gray-700">
               <p className="font-medium">{calculateRating(course)}</p>

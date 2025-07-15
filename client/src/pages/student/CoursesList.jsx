@@ -67,7 +67,6 @@ const CoursesList = () => {
           ))}
         </div>
       </div>
-      <Footer />
     </>
   );
 };
