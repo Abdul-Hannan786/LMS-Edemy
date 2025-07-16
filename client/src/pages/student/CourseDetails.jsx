@@ -116,6 +116,7 @@ const CourseDetails = () => {
                                 src={assets.play_icon}
                                 alt="play icon"
                                 className="w-4 h-4 mt-1 cursor-pointer"
+                                loading="lazy"
                               />{" "}
                               {lecture.lectureTitle}
                             </span>
@@ -177,7 +178,11 @@ const CourseDetails = () => {
             iframeClassName="w-full aspect-video"
           />
         ) : (
-          <img src={courseData.courseThumbnail} alt="course thumbnail" />
+          <img
+            src={courseData.courseThumbnail}
+            loading="lazy"
+            alt="course thumbnail"
+          />
         )}
 
         <div className="p-5">
@@ -186,6 +191,7 @@ const CourseDetails = () => {
               src={assets.time_left_clock_icon}
               alt="time left clock icon"
               className="w-3.5"
+              loading="lazy"
             />
             <p className="text-red-500">
               <span className="font-medium">5 days</span> left at this price!
@@ -215,14 +221,18 @@ const CourseDetails = () => {
             <div className="h-4 w-px bg-gray-500/40"></div>
 
             <div className="flex items-center gap-2">
-              <img src={assets.time_clock_icon} alt="clock icon" />
+              <img
+                src={assets.time_clock_icon}
+                alt="clock icon"
+                loading="lazy"
+              />
               <p>{calculateCourseDuration(courseData)}</p>
             </div>
 
             <div className="h-4 w-px bg-gray-500/40"></div>
 
             <div className="flex items-center gap-2">
-              <img src={assets.lesson_icon} alt="lesson icon" />
+              <img src={assets.lesson_icon} alt="lesson icon" loading="lazy" />
               <p>{calculateNoOfLectures(courseData)} lessons</p>
             </div>
           </div>

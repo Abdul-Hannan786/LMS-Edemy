@@ -25,7 +25,7 @@ const MyEnrollments = () => {
   ]);
 
   return (
-    <div className="md:px-36 px-6 p-10">
+    <div className="md:px-36 px-6 p-10 pb-20">
       <h1 className="text-3xl font-semibold mb-8">My Enrollments</h1>
 
       <div className="rounded-xl border shadow-lg overflow-x-auto">
@@ -51,6 +51,7 @@ const MyEnrollments = () => {
                       src={course.courseThumbnail}
                       alt="thumbnail"
                       className="w-20 object-cover rounded-md sm:w-24"
+                      loading="lazy"
                     />
                     <span className="font-medium w-full flex flex-col gap-2">
                       {course.courseTitle}
