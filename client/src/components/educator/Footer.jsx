@@ -42,13 +42,13 @@ const Footer = () => {
     <div className="h-auto flex flex-col bg-gray-900 text-white">
       <footer>
         <div className="max-w-screen-xl mx-auto">
-          <div className="py-12 flex flex-col sm:flex-row items-start justify-between gap-x-8 gap-y-10 px-6 xl:px-0">
+          <div className="pt-12 pb-6 flex flex-col sm:flex-row items-start justify-between gap-x-8 gap-y-10 px-6 xl:px-0">
             <div>
               {/* Logo */}
               <img src={assets.logo_dark} alt="" loading="lazy" />
               <ul className="mt-6 flex items-center gap-4 flex-wrap">
                 {footerLinks.map(({ title, href }) => (
-                  <li key={title} clas>
+                  <li key={title}>
                     <Link to={href}>{title}</Link>
                   </li>
                 ))}

@@ -39,7 +39,7 @@ const Sidebar = () => {
               const isActive = location.pathname === item.path;
 
               return (
-                <Tooltip key={item.name} className="bg-blue-600" >
+                <Tooltip key={item.name} className="bg-blue-600">
                   <TooltipTrigger asChild>
                     <NavLink to={item.path}>
                       <Button
@@ -47,7 +47,7 @@ const Sidebar = () => {
                         className={`w-full justify-start gap-3 rounded-lg px-3 py-2 transition-colors ${
                           isActive
                             ? "bg-blue-100 text-blue-600"
-                            : "text-muted-foreground hover:bg-gray-100"
+                            : "hover:bg-gray-100"
                         }`}
                       >
                         <img
@@ -61,7 +61,10 @@ const Sidebar = () => {
                       </Button>
                     </NavLink>
                   </TooltipTrigger>
-                  <TooltipContent side="right" className="md:hidden bg-blue-600" >
+                  <TooltipContent
+                    side="right"
+                    className="md:hidden bg-blue-600"
+                  >
                     {item.name}
                   </TooltipContent>
                 </Tooltip>
