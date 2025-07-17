@@ -1,3 +1,4 @@
+import Footer from "@/components/educator/Footer";
 import Navbar from "@/components/educator/Navbar";
 import Sidebar from "@/components/educator/Sidebar";
 import React from "react";
@@ -9,9 +10,11 @@ const Educator = () => {
       <Navbar />
       <div className="flex">
         <Sidebar />
-        <Outlet />
+        <div className="flex-1">
+          <Outlet />
+        </div>
       </div>
-      <div></div>
+      <Footer />
     </div>
   );
 };
