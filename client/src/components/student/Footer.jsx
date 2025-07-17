@@ -110,7 +110,7 @@ const Footer = () => {
             <span className="">
               &copy; {new Date().getFullYear()}{" "}
               <Link href="/" target="_blank">
-                Abdul Hannan
+                Edemy
               </Link>
               . All rights reserved.
             </span>
