@@ -63,11 +63,11 @@ const Dashboard = () => {
       <div className="space-y-2">
         <h2 className="text-lg font-semibold">Latest Enrollments</h2>
 
-        <div className="rounded-xl border shadow-lg">
-          <table className="text-sm text-left w-full">
+        <div className="rounded-xl border shadow-lg w-full flex flex-col items-center max-w-4xl overflow-hidden">
+          <table className="text-sm text-left w-full overflow-hidden">
             <thead className="bg-gray-100 text-gray-700">
               <tr>
-                <th className="px-4 py-3">#</th>
+                <th className="px-4 py-3 hidden md:table-cell">#</th>
                 <th className="px-4 py-3">Student</th>
                 <th className="px-4 py-3">Course</th>
                 {/* Add more columns as needed */}
@@ -76,7 +76,7 @@ const Dashboard = () => {
             <tbody className="divide-y">
               {dashboardData.enrolledStudentsData.map((course, index) => (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-gray-500 font-medium">
+                  <td className="px-4 py-3 text-gray-500 font-medium hidden md:table-cell  ">
                     {index + 1}
                   </td>
 
@@ -86,14 +86,14 @@ const Dashboard = () => {
                       <img
                         src={course.student.imageUrl}
                         alt="Student account picture"
-                        className="w-10 h-10 rounded-full object-cover hidden sm:block"
+                        className="w-10 h-10 rounded-full object-cover"
                       />
-                      <span className="font-medium">{course.student.name}</span>
+                      <span className="font-medium text-[13px] md:text-[15px]">{course.student.name}</span>
                     </div>
                   </td>
 
                   {/* Course Title */}
-                  <td className="px-4 py-3">{course.courseTitle}</td>
+                  <td className="px-4 py-3 text-[13px] md:text-[15px]">{course.courseTitle}</td>
                 </tr>
               ))}
             </tbody>
