@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "@clerk/express": "^1.7.10",
+    "cloudinary": "^2.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.4",
+    "multer": "^2.0.2",
+    "stripe": "^18.3.0",
+    "svix": "^1.42.0"
+  }
+}
