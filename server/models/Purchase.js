@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 const { ObjectId } = mongoose.Schema.Types;
-
+ 
 const purchaseSchema = new Schema(
   {
-    courseId: { type: ObjectId, ref: "Courses", requireed: true },
-    userId: { type: ObjectId, ref: "Users", requireed: true },
-    amount: { type: Number, requireed: true },
+    courseId: { type: ObjectId, ref: "Courses", required: true },
+    userId: { type: ObjectId, ref: "Users", required: true },
+    amount: { type: Number, required: true },
     status: {
       type: String,
       enum: ["pending", "completed", "failed"],
