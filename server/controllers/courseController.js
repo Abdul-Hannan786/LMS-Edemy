@@ -1,9 +1,9 @@
-import Course from "../models/Course";
+import Course from "../models/Course.js";
 
 // Get all courses
 export const getAllCourses = async (req, res) => {
   try {
-    const courses = Course.find({ isPublished: true })
+    const courses = await Course.find({ isPublished: true })
       .select(["-courseContent", "-enrolledStudents"])
       .populate({ path: "educator" });
 
@@ -23,7 +23,7 @@ export const getSingleCourse = async (req, res) => {
     // removelectureUrl if isPreview is false
     courseData.courseContent.forEach((chapter) => {
       chapter.chapterContent.forEach((lecture) => {
-        if (!lecture.isPreview) {
+        if (!lecture.isPreviewFree) {
           lecture.lectureUrl = "";
         }
       });

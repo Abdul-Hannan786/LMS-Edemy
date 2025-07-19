@@ -2,6 +2,8 @@ import { clerkClient } from "@clerk/express";
 import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
+import { uploadToCloudinary } from "../config/cloudinary.js";
+import cloudinary from "../config/cloudinary.js";
 
 // Update role to educator
 export const updatRoleToEducator = async (req, res) => {
@@ -26,14 +28,24 @@ export const addCourse = async (req, res) => {
     const { courseData } = req.body;
     const imageFile = req.file;
     const educatorId = req.auth().userId;
+    console.log(imageFile)
 
     if (!imageFile) {
       return res.json({ success: false, message: "Thumbnail not attached" });
     }
 
+    if (!imageFile.mimetype.startsWith("image/")) {
+      return res.json({
+        success: false,
+        message: "Only image files are allowed",
+      });
+    }
+
     const parsedCourseData = JSON.parse(courseData);
     parsedCourseData.educator = educatorId;
-    parsedCourseData.courseThumbnail = imageFile.path;
+
+    const result = await uploadToCloudinary(imageFile.buffer, "courses");
+    parsedCourseData.courseThumbnail = result.secure_url;
 
     const newCourse = await Course.create(parsedCourseData);
 
