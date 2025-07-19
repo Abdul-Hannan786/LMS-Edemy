@@ -1,11 +1,10 @@
 import { clerkClient } from "@clerk/express";
 import Course from "../models/Course.js";
-import { v2 as cloudinary } from "cloudinary";
 
 // Update role to educator
 export const updatRoleToEducator = async (req, res) => {
   try {
-    const userId = req.auth.userId;
+    const userId = req.auth().userId;
     await clerkClient.users.updateUserMetadata(userId, {
       publicMetadata: {
         role: "educator",
@@ -32,9 +31,7 @@ export const addCourse = async (req, res) => {
 
     const parsedCourseData = JSON.parse(courseData);
     parsedCourseData.educator = educatorId;
-
-    const imageUpload = await cloudinary.uploader.upload(imageFile.path);
-    parsedCourseData.courseThumbnail = imageUpload.secure_url;
+    parsedCourseData.courseThumbnail = imageFile.path;
 
     const newCourse = await Course.create(parsedCourseData);
 
@@ -44,3 +41,19 @@ export const addCourse = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// Get educator courses
+export const getEducatorCourses = async (req, res) => {
+  try {
+    const educator = req.auth().userId;
+
+    const courses = await Course.find({ educator });
+
+    res.json({ success: true, courses });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Get Educator Dashboard Data (Total Earning, Enrolled Students, No. of Courses)

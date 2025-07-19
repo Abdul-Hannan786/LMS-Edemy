@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addCourse,
+  getEducatorCourses,
   updatRoleToEducator,
 } from "../controllers/educatorController.js";
 import upload from "../config/multer.js";
@@ -10,5 +11,6 @@ const router = express.Router();
 
 router.get("/update-role", updatRoleToEducator);
 router.post("/add-course", upload.single("image"), protectEduactor, addCourse);
+router.get("/courses", protectEduactor, getEducatorCourses);
 
 export default router;
