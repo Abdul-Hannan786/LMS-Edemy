@@ -3,7 +3,6 @@ import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
 import { uploadToCloudinary } from "../config/cloudinary.js";
-import cloudinary from "../config/cloudinary.js";
 
 // Update role to educator
 export const updatRoleToEducator = async (req, res) => {
