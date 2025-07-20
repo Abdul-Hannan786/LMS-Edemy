@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv/config";
 import connectDB from "./config/db.js";
-import { clerkWebHooks } from "./controllers/webhooks.js";
+import { clerkWebHooks, stripeWebhooks } from "./controllers/webhooks.js";
 import educatorRouter from "./routes/educatorRoutes.js";
 import courseRouter from "./routes/courseRouter.js";
 import userRouter from "./routes/userRouter.js";
@@ -20,6 +20,7 @@ app.post("/clerk", clerkWebHooks);
 app.use("/api/educator", educatorRouter);
 app.use("/api/course", courseRouter);
 app.use("/api/user", userRouter);
+app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
 connectDB()
   .then(() => {
