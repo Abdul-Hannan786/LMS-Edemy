@@ -12,14 +12,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
+
 app.use(clerkMiddleware());
 
 app.get("/", (req, res) => res.send("Hello World"));
-app.post("/clerk", clerkWebHooks);
-app.use("/api/educator", educatorRouter);
-app.use("/api/course", courseRouter);
-app.use("/api/user", userRouter);
+app.post("/clerk", express.json(), clerkWebHooks);
+app.use("/api/educator", express.json(), educatorRouter);
+app.use("/api/course", express.json(), courseRouter);
+app.use("/api/user", express.json(), userRouter);
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
 connectDB()
