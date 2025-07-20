@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { dummyCourses } from "../../assets/assets";
 import CourseCard from "./CourseCard";
 import { useAppContext } from "../../context/AppContext";
 

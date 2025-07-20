@@ -13,38 +13,84 @@ import { Card } from "@/components/ui/card";
 import { assets } from "@/assets/assets";
 import humanizeDuration from "humanize-duration";
 import YouTube from "react-youtube";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const CourseDetails = () => {
   const { id } = useParams();
   const [courseData, setCourseData] = useState(null);
-  // eslint-disable-next-line no-unused-vars
   const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
   const [playerData, setPlayerData] = useState(null);
-  console.log(playerData);
 
   const {
-    allCourses,
     calculateRating,
     calculateNoOfLectures,
     calculateCourseDuration,
     calculateChapterTime,
+    userData,
+    getToken,
   } = useAppContext();
   const fetchCourseData = async () => {
-    const course = allCourses.find((course) => course._id === id);
-    setCourseData(course);
+    try {
+      const { data } = await axios.get(`/api/course/${id}`);
+      if (data.success) {
+        setCourseData(data.courseData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const enrollCourse = async () => {
+    try {
+      if (!userData) {
+        return toast.error("Login to enroll");
+      }
+      if (isAlreadyEnrolled) {
+        return toast("Already Enrolled");
+      }
+
+      const token = await getToken();
+      const { data } = await axios.post(
+        "/api/user/purchase",
+        { courseId: courseData._id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        const { session_url } = data;
+        window.location.replace(session_url);
+      } else {
+        toast.error(toast.error);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
     fetchCourseData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allCourses]);
+  }, []);
+
+  useEffect(() => {
+    if (userData && courseData) {
+      setIsAlreadyEnrolled(userData.enrolledCourses.includes(courseData._id));
+    }
+  }, [userData, courseData]);
 
   return courseData ? (
-    <div className="flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between md:px-36 px-8 md:pt-20 pt-10 text-left">
+    <div className="relative flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between md:px-36 px-8 md:pt-20 pt-10 text-left pb-10">
       <div className="absolute top-0 left-0 w-full h-[500px] z-0 bg-gradient-to-b from-cyan-100/70"></div>
 
       {/* Left Column */}
-      <div className="max-w-xl z-10 text-gray-500">
+      <div className="max-w-2xl z-10 text-gray-500">
         <h1 className="md:text-[36px] md:leading-11 leading-9 text-[26px] font-semibold text-gray-800">
           {courseData.courseTitle}
         </h1>
@@ -83,13 +129,15 @@ const CourseDetails = () => {
 
         <p className="text-sm">
           Course by{" "}
-          <span className="text-blue-600 underline">Abdul Hannan</span>
+          <span className="text-blue-600 underline">
+            {courseData.educator.name}
+          </span>
         </p>
 
         <div className="pt-8 text-gray-800">
           <h2 className="text-xl font-semibold">Course Structure</h2>
           <div className="pt-5">
-            <div className="max-w-4xl mx-auto space-y-4">
+            <div className="w-full space-y-4">
               <Accordion
                 type="single"
                 collapsible
@@ -236,7 +284,10 @@ const CourseDetails = () => {
               <p>{calculateNoOfLectures(courseData)} lessons</p>
             </div>
           </div>
-          <button className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium">
+          <button
+            onClick={enrollCourse}
+            className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium"
+          >
             {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
           </button>
 

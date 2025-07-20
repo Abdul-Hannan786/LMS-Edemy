@@ -11,7 +11,7 @@ const CourseCard = ({ course }) => {
 
   return (
     <Link to={`/course/${course._id}`}>
-      <Card className="overflow-hidden shadow-xl rounded-md py-0 gap-0 border-none hover:scale-105 transition-all duration-500">
+      <Card className="overflow-hidden md:min-w-[340px] shadow-xl rounded-md py-0 gap-0 border-none hover:scale-105 transition-all duration-500">
         <CardHeader className="p-0 m-0">
           <div className="aspect-video bg-muted w-full border-b">
             <img
@@ -35,7 +35,7 @@ const CourseCard = ({ course }) => {
           </h3>
 
           <p className="mt-1 text-start text-muted-foreground">
-            {course.educator.name || "Abdul Hannan"}
+            {course.educator.name || "Anonymmous"}
           </p>
 
           {/* Rating + Price Section */}

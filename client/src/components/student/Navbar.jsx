@@ -2,14 +2,40 @@ import { assets } from "../../assets/assets";
 import { Link, useLocation } from "react-router-dom";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { useAppContext } from "@/context/AppContext";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Navbar = () => {
   const location = useLocation();
   const isCourseListPage = location.pathname.includes("/course-list");
-  const { navigate, isEducator } = useAppContext();
+  const { navigate, isEducator, setIsEducator, getToken } = useAppContext();
 
   const { openSignIn } = useClerk();
   const { user } = useUser();
+
+  const becomeEducator = async () => {
+    try {
+      if (isEducator) {
+        navigate("/educator");
+        return;
+      }
+      const token = await getToken();
+      const { data } = await axios.get("/api/educator/update-role", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (data.success) {
+        setIsEducator(true);
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div
@@ -29,10 +55,7 @@ const Navbar = () => {
           {user && (
             <>
               {" "}
-              <button
-                className="cursor-pointer"
-                onClick={() => navigate("/educator")}
-              >
+              <button className="cursor-pointer" onClick={becomeEducator}>
                 {isEducator ? "Educator Dashboard" : "Become Educator"}
               </button>{" "}
               |<Link to="/my-enrollments">My Enrollments</Link>{" "}
@@ -57,10 +80,7 @@ const Navbar = () => {
           {user && (
             <>
               {" "}
-              <button
-                className="cursor-pointer"
-                onClick={() => navigate("/educator")}
-              >
+              <button className="cursor-pointer" onClick={becomeEducator}>
                 {isEducator ? "Educator Dashboard" : "Become Educator"}
               </button>{" "}
               |<Link to="/my-enrollments">My Enrollments</Link>{" "}
