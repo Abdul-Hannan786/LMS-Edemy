@@ -84,7 +84,7 @@ export const stripeWebhooks = async (req, res) => {
       const session = await stripeInstance.checkout.sessions.list({
         payment_intent: paymentIntentId,
       });
-      console.log("Function check 1");
+
       const { purchaseId } = session.data[0].metadata;
 
       const purchaseData = await Purchase.findById(purchaseId);
@@ -93,19 +93,14 @@ export const stripeWebhooks = async (req, res) => {
         purchaseData.courseId.toString()
       );
 
-      console.log("Function check 2");
       courseData.enrolledStudents.push(userData);
-      console.log("Function check 4002010");
       await courseData.save();
-      console.log("Function check 3");
 
       userData.enrolledCourses.push(courseData._id);
       await userData.save();
-      console.log("Function check 4");
 
       purchaseData.status = "completed";
       await purchaseData.save();
-      console.log("Function check 5");
 
       break;
     }
