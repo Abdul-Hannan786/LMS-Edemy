@@ -41,6 +41,7 @@ export const userEnrolledCourse = async (req, res) => {
 // Purchase course
 export const purchaseCourse = async (req, res) => {
   try {
+    calulateNoOfLectures;
     const { courseId } = req.body;
     const { origin } = req.headers;
     const { userId } = req.auth();

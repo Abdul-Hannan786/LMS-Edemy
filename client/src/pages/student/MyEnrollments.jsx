@@ -1,21 +1,62 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const MyEnrollments = () => {
-  const { enrolledCourses, calculateCourseDuration, navigate } =
-    useAppContext();
-  const [progressArray] = useState([
-    { lectureCompleted: 2, totalLectures: 4 },
-    { lectureCompleted: 2, totalLectures: 7 },
-    { lectureCompleted: 1, totalLectures: 5 },
-    { lectureCompleted: 3, totalLectures: 3 },
-    { lectureCompleted: 3, totalLectures: 6 },
-    { lectureCompleted: 6, totalLectures: 8 },
-    { lectureCompleted: 4, totalLectures: 4 },
-    { lectureCompleted: 0, totalLectures: 4 },
-  ]);
+  const {
+    enrolledCourses,
+    calculateCourseDuration,
+    navigate,
+    userData,
+    fetchUserEnrolledCourses,
+    getToken,
+    calculateNoOfLectures,
+  } = useAppContext();
+  const [progressArray, setProgressArray] = useState([]);
+
+  const getCourseProgress = async () => {
+    try {
+      const token = await getToken();
+      const tempProgressArray = await Promise.all(
+        enrolledCourses.map(async (course) => {
+          const { data } = await axios.post(
+            "/api/user/get-course-progress",
+            {
+              courseId: course._id,
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+
+          let totalLectures = calculateNoOfLectures(course);
+          const lectureCompleted = data.progressData
+            ? data.progressData.lectureCompleted.length
+            : 0;
+          return { totalLectures, lectureCompleted };
+        })
+      );
+      console.log(tempProgressArray);
+      setProgressArray(tempProgressArray);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (userData) {
+      fetchUserEnrolledCourses();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData]);
+
+  useEffect(() => {
+    if(enrolledCourses.length > 0){
+      getCourseProgress()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enrolledCourses])
 
   return (
     <div className="md:px-36 px-6 p-10 pb-20">
@@ -70,7 +111,7 @@ const MyEnrollments = () => {
                     <Button
                       variant={!isCompleted && "secondary"}
                       onClick={() => navigate(`/player/${course._id}`)}
-                      className={`text-xs sm:text-sm ${
+                      className={`text-xs sm:text-sm cursor-pointer ${
                         isCompleted && "bg-blue-600 text-white"
                       }`}
                     >

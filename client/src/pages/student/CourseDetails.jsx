@@ -66,6 +66,7 @@ const CourseDetails = () => {
       if (data.success) {
         const { session_url } = data;
         window.location.replace(session_url);
+        setIsAlreadyEnrolled(true);
       } else {
         toast.error(toast.error);
       }
@@ -286,7 +287,7 @@ const CourseDetails = () => {
           </div>
           <button
             onClick={enrollCourse}
-            className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium"
+            className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium cursor-pointer"
           >
             {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
           </button>

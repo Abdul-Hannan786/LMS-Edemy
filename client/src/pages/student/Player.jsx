@@ -10,24 +10,85 @@ import {
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 import { useAppContext } from "@/context/AppContext";
+import axios from "axios";
 import humanizeDuration from "humanize-duration";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import YouTube from "react-youtube";
 
 const Player = () => {
-  const { calculateChapterTime, enrolledCourses } = useAppContext();
+  const {
+    calculateChapterTime,
+    enrolledCourses,
+    getToken,
+    userData,
+    fetchUserEnrolledCourses,
+  } = useAppContext();
   const { courseId } = useParams();
   const [courseData, setCourseData] = useState(null);
   const [playerData, setPlayerData] = useState(null);
+  const [progressData, setProgressData] = useState(null);
+  const [initialRating, setInitialRating] = useState(0);
 
   const getCourseData = () => {
-    const course = enrolledCourses.find((course) => course._id === courseId);
-    setCourseData(course);
+    enrolledCourses.map((course) => {
+      if (course._id === courseId) {
+        setCourseData(course);
+        course.courseRatings.map((item) => {
+          if (item.userId === courseData._id) {
+            setInitialRating(item.rating);
+          }
+        });
+      }
+    });
+  };
+
+  const markLectureAsCompleted = async (lectureId) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.post(
+        "/api/user/update-course-progress",
+        {
+          courseId,
+          lectureId,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        toast.success(data.message);
+        getCourseProgress();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const getCourseProgress = async () => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.post(
+        "/api/user/get-course-progress",
+        { courseId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (data.success) {
+        setProgressData(data.progressData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
-    getCourseData();
+    if (enrolledCourses.length > 0) {
+      getCourseData();
+    }
   }, [enrolledCourses]);
 
   return (
