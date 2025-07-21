@@ -36,7 +36,7 @@ export const AppContextProvider = ({ children }) => {
 
   // Fetch user data
   const fetchUserData = async () => {
-    if (user.publicMetadata.role === "educator") {
+    if (user?.publicMetadata?.role === "educator") {
       setIsEducator(true);
     }
     try {
@@ -70,7 +70,7 @@ export const AppContextProvider = ({ children }) => {
   // Function to calculate course chapter time
   const calculateChapterTime = (chapter) => {
     let time = 0;
-    chapter.chapterContent.map((lecture) => (time += lecture.lectureDuration));
+    chapter.chapterContent.forEach((lecture) => (time += lecture.lectureDuration));
     return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] });
   };
 
@@ -122,7 +122,7 @@ export const AppContextProvider = ({ children }) => {
       fetchUserData();
       fetchUserEnrolledCourses();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const value = {

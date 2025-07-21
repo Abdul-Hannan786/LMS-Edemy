@@ -1,14 +1,24 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import path from "path"
+import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
+      // eslint-disable-next-line no-undef
       "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  build: {
+    commonjsOptions: {
+      transformMixedEsModules: true,
+      strictRequires: false,
+    },
+    rollupOptions: {
+      treeshake: false, // try disabling treeshake if the error persists
     },
   },
 });

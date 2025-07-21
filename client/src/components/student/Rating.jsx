@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 
-
-const Rating = ({ initailRating, onRate }) => {
-  const [rating, setRating] = useState(initailRating || 0);
+const Rating = ({ initiallRating, onRate }) => {
+  const [rating, setRating] = useState(initiallRating || 0);
 
   const handleRating = (value) => {
     setRating(value);
@@ -11,10 +10,10 @@ const Rating = ({ initailRating, onRate }) => {
   };
 
   useEffect(() => {
-    if (initailRating) {
-      setRating(initailRating);
+    if (initiallRating) {
+      setRating(initiallRating);
     }
-  }, [initailRating]);
+  }, [initiallRating]);
 
   return (
     <div className="flex gap-1">

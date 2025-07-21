@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Loading from "@/components/student/Loading";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
@@ -22,15 +23,14 @@ const Dashboard = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 
   useEffect(() => {
-    if (isEducator) {
-      fetchDashboardData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   if(isEducator){
+    fetchDashboardData()
+   }
   }, [isEducator]);
 
   return dashboardData ? (
