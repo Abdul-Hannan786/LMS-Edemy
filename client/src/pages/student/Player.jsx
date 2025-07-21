@@ -1,6 +1,6 @@
-/* eslint-disable no-constant-condition */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { assets } from "@/assets/assets";
+import Loading from "@/components/student/Loading";
 import Rating from "@/components/student/Rating";
 import {
   Accordion,
@@ -35,8 +35,9 @@ const Player = () => {
     enrolledCourses.map((course) => {
       if (course._id === courseId) {
         setCourseData(course);
+
         course.courseRatings.map((item) => {
-          if (item.userId === courseData._id) {
+          if (item.userId === userData._id) {
             setInitialRating(item.rating);
           }
         });
@@ -85,13 +86,39 @@ const Player = () => {
     }
   };
 
+  const handleRate = async (rating) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.post(
+        "/api/user/add-rating",
+        {
+          courseId,
+          rating,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        toast.success(data.message);
+        fetchUserEnrolledCourses();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getCourseProgress();
+  }, []);
+
   useEffect(() => {
     if (enrolledCourses.length > 0) {
       getCourseData();
     }
   }, [enrolledCourses]);
 
-  return (
+  return courseData ? (
     <div className="p-6 sm:p-12 sm:pb-28 flex flex-col-reverse md:grid md:grid-cols-2 gap-10 md:px-36">
       {/* Left Column */}
       <div className="text-gray-800">
@@ -124,7 +151,10 @@ const Player = () => {
                               <img
                                 loading="lazy"
                                 src={
-                                  false
+                                  progressData &&
+                                  progressData.lectureCompleted.includes(
+                                    lecture.lectureId
+                                  )
                                     ? assets.blue_tick_icon
                                     : assets.play_icon
                                 }
@@ -166,7 +196,7 @@ const Player = () => {
 
         <div className="flex items-center gap-2 py-3 mt-10">
           <h1 className="text-xl font-bold">Rate this course:</h1>
-          <Rating initailRating={0} />
+          <Rating initailRating={initialRating} onRate={handleRate} />
         </div>
       </div>
 
@@ -183,8 +213,14 @@ const Player = () => {
                 {playerData.chapter}.{playerData.lecture}{" "}
                 {playerData.lectureTitle}
               </p>
-              <button className="text-blue-600">
-                {false ? "completed" : "Mark Complete"}
+              <button
+                onClick={() => markLectureAsCompleted(playerData.lectureId)}
+                className="text-blue-600"
+              >
+                {progressData &&
+                progressData.lectureCompleted.includes(playerData.lectureId)
+                  ? "Completed"
+                  : "Mark Complete"}
               </button>
             </div>
           </div>
@@ -198,6 +234,8 @@ const Player = () => {
         )}
       </div>
     </div>
+  ) : (
+    <Loading />
   );
 };
 

@@ -1,19 +1,37 @@
-import { dummyDashboardData } from "@/assets/assets";
 import Loading from "@/components/student/Loading";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { GraduationCap, BookOpen, DollarSign } from "lucide-react";
+import { useAppContext } from "@/context/AppContext";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
+  const { getToken, isEducator } = useAppContext();
 
   const fetchDashboardData = async () => {
-    setDashboardData(dummyDashboardData);
+    try {
+      const token = await getToken();
+      const { data } = await axios.get("/api/educator/dashboard", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (data.success) {
+        setDashboardData(data.dashboardData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    if (isEducator) {
+      fetchDashboardData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEducator]);
 
   return dashboardData ? (
     <div className="p-6 space-y-8">
@@ -88,12 +106,16 @@ const Dashboard = () => {
                         alt="Student account picture"
                         className="w-10 h-10 rounded-full object-cover"
                       />
-                      <span className="font-medium text-[13px] md:text-[15px]">{course.student.name}</span>
+                      <span className="font-medium text-[13px] md:text-[15px]">
+                        {course.student.name}
+                      </span>
                     </div>
                   </td>
 
                   {/* Course Title */}
-                  <td className="px-4 py-3 text-[13px] md:text-[15px]">{course.courseTitle}</td>
+                  <td className="px-4 py-3 text-[13px] md:text-[15px]">
+                    {course.courseTitle}
+                  </td>
                 </tr>
               ))}
             </tbody>

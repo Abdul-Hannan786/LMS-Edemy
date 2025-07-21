@@ -41,7 +41,6 @@ export const userEnrolledCourse = async (req, res) => {
 // Purchase course
 export const purchaseCourse = async (req, res) => {
   try {
-    calulateNoOfLectures;
     const { courseId } = req.body;
     const { origin } = req.headers;
     const { userId } = req.auth();
@@ -149,7 +148,7 @@ export const addUserRating = async (req, res) => {
   const { userId } = req.auth();
   const { courseId, rating } = req.body;
 
-  if (!courseId || !userId || rating || rating < 1 || rating > 5) {
+  if (!courseId || !userId || !rating || rating < 1 || rating > 5) {
     return res.json({ success: false, message: "Invalid details" });
   }
 

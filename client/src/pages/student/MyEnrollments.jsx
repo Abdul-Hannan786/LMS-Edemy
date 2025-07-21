@@ -37,7 +37,6 @@ const MyEnrollments = () => {
           return { totalLectures, lectureCompleted };
         })
       );
-      console.log(tempProgressArray);
       setProgressArray(tempProgressArray);
     } catch (error) {
       toast.error(error.message);
@@ -52,11 +51,11 @@ const MyEnrollments = () => {
   }, [userData]);
 
   useEffect(() => {
-    if(enrolledCourses.length > 0){
-      getCourseProgress()
+    if (enrolledCourses.length > 0) {
+      getCourseProgress();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enrolledCourses])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enrolledCourses]);
 
   return (
     <div className="md:px-36 px-6 p-10 pb-20">

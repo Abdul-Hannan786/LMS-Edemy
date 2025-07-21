@@ -1,19 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Loading from "@/components/student/Loading";
 import { useAppContext } from "@/context/AppContext";
+import axios from "axios";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const MyCourses = () => {
-  const { allCourses } = useAppContext();
-  const [courses, setCourses] = useState([]);
+  const { getToken, isEducator } = useAppContext();
+  const [courses, setCourses] = useState(null);
 
   const fetchEducatorCourses = async () => {
-    setCourses(allCourses);
+    try {
+      const token = await getToken();
+      const { data } = await axios.get("/api/educator/courses", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (data.success) {
+        setCourses(data.courses);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
-    fetchEducatorCourses();
-  }, [courses]);
+    if (isEducator) {
+      fetchEducatorCourses();
+    }
+  }, [isEducator]);
 
   return courses ? (
     <div className="h-auto flex flex-col items-start justify-between md:p-8 p-4 pt-8 pb-20">
@@ -33,7 +49,7 @@ const MyCourses = () => {
             </thead>
             <tbody className="divide-y">
               {courses.map((course, index) => {
-                return ( 
+                return (
                   <tr key={index} className="hover:bg-gray-50">
                     <td className="flex items-center gap-3 px-4 py-3">
                       <img

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 
+
 const Rating = ({ initailRating, onRate }) => {
   const [rating, setRating] = useState(initailRating || 0);
 

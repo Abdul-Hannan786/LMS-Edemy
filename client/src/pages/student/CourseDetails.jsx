@@ -87,11 +87,11 @@ const CourseDetails = () => {
   }, [userData, courseData]);
 
   return courseData ? (
-    <div className="relative flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between md:px-36 px-8 md:pt-20 pt-10 text-left pb-10">
+    <div className="relative flex md:flex-row flex-col-reverse gap-10 items-start justify-between md:px-36 px-8 md:pt-20 pt-10 text-left pb-10">
       <div className="absolute top-0 left-0 w-full h-[500px] z-0 bg-gradient-to-b from-cyan-100/70"></div>
 
       {/* Left Column */}
-      <div className="max-w-2xl z-10 text-gray-500">
+      <div className="max-w-xl z-10 text-gray-500">
         <h1 className="md:text-[36px] md:leading-11 leading-9 text-[26px] font-semibold text-gray-800">
           {courseData.courseTitle}
         </h1>
@@ -138,7 +138,7 @@ const CourseDetails = () => {
         <div className="pt-8 text-gray-800">
           <h2 className="text-xl font-semibold">Course Structure</h2>
           <div className="pt-5">
-            <div className="w-full space-y-4">
+            <div className="max-w-4xl mx-auto space-y-4">
               <Accordion
                 type="single"
                 collapsible

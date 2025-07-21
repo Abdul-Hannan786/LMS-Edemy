@@ -13,10 +13,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import Quill from "quill";
 import { useEffect, useRef, useState } from "react";
 import uniqid from "uniqid";
+import { useAppContext } from "@/context/AppContext";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { LoaderCircle } from "lucide-react";
 
 const AddCourse = () => {
   const quillRef = useRef(null);
   const editorRef = useRef(null);
+  const { getToken } = useAppContext();
 
   const [courseTitle, setCourseTitle] = useState("");
   const [coursePrice, setCoursePrice] = useState(0);
@@ -31,6 +36,7 @@ const AddCourse = () => {
     isPreviewFree: false,
   });
   const [showPopup, setShowPopup] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChapter = (action, chapterId) => {
     if (action === "add") {
@@ -109,6 +115,44 @@ const AddCourse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      if (!image) {
+        return toast.error("Thumbnail not provided");
+      }
+      if (loading) return null;
+      setLoading(true);
+      true;
+      const courseData = {
+        courseTitle,
+        courseDescription: quillRef.current.root.innerHTML,
+        coursePrice: Number(coursePrice),
+        discount: Number(discount),
+        courseContent: chapters,
+      };
+      const formData = new FormData();
+      formData.append("courseData", JSON.stringify(courseData));
+      formData.append("image", image);
+
+      const token = await getToken();
+      const { data } = await axios.post("/api/educator/add-course", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (data.success) {
+        toast.success(data.message);
+        setCourseTitle("");
+        setCoursePrice(0);
+        setDiscount(0);
+        setImage(null);
+        setChapters([]);
+        quillRef.current.root.innerHTML = "";
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -203,6 +247,7 @@ const AddCourse = () => {
                   <Button
                     variant="outline"
                     size="sm"
+                    className="cursor-pointer"
                     onClick={() => handleChapter("toggle", chapter.chapterId)}
                   >
                     {chapter.collapsed ? "Expand" : "Collapse"}
@@ -210,6 +255,7 @@ const AddCourse = () => {
                   <Button
                     variant="destructive"
                     size="sm"
+                    className="cursor-pointer"
                     onClick={() => handleChapter("remove", chapter.chapterId)}
                   >
                     Remove
@@ -267,7 +313,8 @@ const AddCourse = () => {
                   <Button
                     variant="secondary"
                     onClick={() => handleLecture("add", chapter.chapterId)}
-                    className="w-full"
+                    className="w-full cursor-pointer"
+                    type="button"
                   >
                     + Add Lecture
                   </Button>
@@ -279,6 +326,7 @@ const AddCourse = () => {
           <Button
             className="bg-blue-100 text-black hover:bg-blue-100/90 cursor-pointer"
             onClick={() => handleChapter("add")}
+            type="button"
           >
             + Add Chapter
           </Button>
@@ -345,7 +393,10 @@ const AddCourse = () => {
                   <Label>Is Preview Free?</Label>
                 </div>
 
-                <Button className="w-full" onClick={addLecture}>
+                <Button
+                  className="w-full bg-blue-600 cursor-pointer hover:bg-blue-600/90"
+                  onClick={addLecture}
+                >
                   Add Lecture
                 </Button>
               </div>
@@ -355,9 +406,20 @@ const AddCourse = () => {
 
         <Button
           type="submit"
+          disabled={loading}
           className="w-full bg-blue-600 font-semibold hover:bg-blue-600/90 cursor-pointer"
         >
-          Add Course
+          {loading ? (
+            <>
+              Adding Course
+              <LoaderCircle
+                className="w-5 h-5 animate-spin text-white"
+                strokeWidth={3}
+              />
+            </>
+          ) : (
+            "Add Course"
+          )}
         </Button>
       </form>
     </div>
